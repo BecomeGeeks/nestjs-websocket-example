@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NestJS WebSocket Tutorial</title>
+</head>
+<body>
+  <h1>NestJS WebSocket Tutorial</h1>
+  <div id="chat"></div>
+  <input type="text" id="message" placeholder="Type your message..." />
+  <button onclick="sendMessage()">Send</button>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+  <script>
+    const socket = io('http://localhost:3000');
+
+    socket.on('message', (message) => {
+      const chatDiv = document.getElementById('chat');
+      chatDiv.innerHTML += `<p>${message}</p>`;
+    });
+
+    socket.on('userConnected', (message) => {
+      const chatDiv = document.getElementById('chat');
+      chatDiv.innerHTML += `<p>${message}</p>`;
+    });
+
+    socket.on('userDisconnected', (message) => {
+      const chatDiv = document.getElementById('chat');
+      chatDiv.innerHTML += `<p>${message}</p>`;
+    });
+
+    function sendMessage() {
+      const messageInput = document.getElementById('message');
+      const message = messageInput.value;
+      socket.emit('message', message);
+      messageInput.value = '';
+    }
+  </script>
+</body>
+</html>
